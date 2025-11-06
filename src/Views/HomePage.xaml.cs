@@ -1,0 +1,23 @@
+using MSISDNWebClient.ViewModels;
+
+namespace MSISDNWebClient.Views
+{
+    public partial class HomePage : ContentPage
+    {
+        public HomePage(HomeViewModel viewModel)
+        {
+            InitializeComponent();
+            BindingContext = viewModel;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            
+            if (BindingContext is HomeViewModel vm)
+            {
+                await vm.LoadDataAsync();
+            }
+        }
+    }
+}

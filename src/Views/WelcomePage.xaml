@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:MSISDNWebClient.ViewModels"
+             x:Class="MSISDNWebClient.Views.WelcomePage"
+             x:DataType="vm:WelcomeViewModel"
+             BackgroundColor="{StaticResource Primary}">
+
+    <Grid RowDefinitions="*,Auto,*" 
+          Padding="40">
+        
+        <!-- Logo y título -->
+        <VerticalStackLayout Grid.Row="1" 
+                            Spacing="30"
+                            HorizontalOptions="Center">
+            
+            <Label Text="MSISDN-WEB"
+                   FontSize="48"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   TextColor="White" />
+
+            <Label Text="Tu identidad descentralizada"
+                   FontSize="20"
+                   HorizontalTextAlignment="Center"
+                   TextColor="White"
+                   Opacity="0.9" />
+
+            <BoxView HeightRequest="2"
+                     WidthRequest="100"
+                     Color="White"
+                     Opacity="0.5"
+                     HorizontalOptions="Center" />
+
+            <Label Text="Accede a la web usando tu número móvil&#x0a;Sin contraseñas, sin servidores centralizados"
+                   FontSize="16"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap"
+                   TextColor="White"
+                   Opacity="0.8"
+                   Margin="0,0,0,40" />
+
+            <Button Text="Comenzar"
+                    Command="{Binding StartOnboardingCommand}"
+                    BackgroundColor="White"
+                    TextColor="{StaticResource Primary}"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    CornerRadius="25"
+                    HeightRequest="50"
+                    WidthRequest="200" />
+            
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>

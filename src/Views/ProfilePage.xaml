@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:MSISDNWebClient.ViewModels"
+             x:Class="MSISDNWebClient.Views.ProfilePage"
+             x:DataType="vm:ProfileViewModel"
+             BackgroundColor="{StaticResource PageBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20"
+                             Spacing="20">
+
+            <Label Text="Mi Perfil Web"
+                   Style="{StaticResource TitleStyle}"
+                   Margin="10,20,0,10" />
+
+            <!-- Avatar y nombre -->
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="15">
+                    <Image Source="{Binding AvatarUrl, TargetNullValue='dotnet_bot.png'}"
+                           HeightRequest="120"
+                           WidthRequest="120"
+                           Aspect="AspectFill"
+                           HorizontalOptions="Center">
+                        <Image.Clip>
+                            <EllipseGeometry Center="60,60"
+                                             RadiusX="60"
+                                             RadiusY="60" />
+                        </Image.Clip>
+                    </Image>
+
+                    <Entry Text="{Binding DisplayName}"
+                           Placeholder="Tu nombre"
+                           IsReadOnly="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Biografía -->
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Biografía"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" />
+
+                    <Editor Text="{Binding Bio}"
+                            Placeholder="Cuéntanos sobre ti..."
+                            IsReadOnly="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
+                            HeightRequest="100"
+                            AutoSize="TextChanges" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Contenido Web -->
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Página Web Personal"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" />
+
+                    <Label Text="Edita tu espacio web (HTML/Markdown)"
+                           FontSize="12"
+                           TextColor="{StaticResource TextSecondary}" />
+
+                    <Editor Text="{Binding WebPageContent}"
+                            Placeholder="&lt;h1&gt;Mi Página&lt;/h1&gt;..."
+                            IsReadOnly="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
+                            HeightRequest="150"
+                            AutoSize="TextChanges"
+                            FontFamily="Monospace" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Enlaces sociales -->
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Enlaces Sociales"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" />
+
+                    <CollectionView ItemsSource="{Binding Links}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <HorizontalStackLayout Spacing="10"
+                                                       Padding="5">
+                                    <Label Text="{Binding Title}"
+                                           FontSize="14"
+                                           TextColor="{StaticResource TextPrimary}"
+                                           VerticalOptions="Center"
+                                           WidthRequest="100" />
+                                    <Label Text="{Binding Url}"
+                                           FontSize="12"
+                                           TextColor="{StaticResource Primary}"
+                                           VerticalOptions="Center"
+                                           LineBreakMode="TailTruncation"
+                                           HorizontalOptions="Fill" />
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Button Text="+ Añadir Enlace"
+                            Command="{Binding AddLinkCommand}"
+                            IsVisible="{Binding IsEditMode}"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            FontSize="14"
+                            HeightRequest="40" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Botones de acción -->
+            <HorizontalStackLayout Spacing="10"
+                                   HorizontalOptions="Center"
+                                   Margin="0,10,0,30">
+                <Button Text="Editar"
+                        Command="{Binding EnableEditModeCommand}"
+                        IsVisible="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        WidthRequest="120" />
+
+                <Button Text="Guardar"
+                        Command="{Binding SaveProfileCommand}"
+                        IsVisible="{Binding IsEditMode}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        WidthRequest="120" />
+
+                <Button Text="Cancelar"
+                        Command="{Binding CancelEditCommand}"
+                        IsVisible="{Binding IsEditMode}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        WidthRequest="120" />
+            </HorizontalStackLayout>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               Color="{StaticResource Primary}"
+                               HeightRequest="40" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

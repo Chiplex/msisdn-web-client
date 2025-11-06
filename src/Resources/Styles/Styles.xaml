@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Estilos Web3 Minimalistas -->
+
+    <!-- Text Styles -->
+    <Style x:Key="TitleStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="Margin" Value="0,0,0,10" />
+    </Style>
+
+    <Style x:Key="SubtitleStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <Style x:Key="BodyStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <Style x:Key="CaptionStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" Value="{StaticResource TextTertiary}" />
+    </Style>
+
+    <!-- Button Styles -->
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HeightRequest" Value="50" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource Primary}"
+                    Opacity="0.3"
+                    Radius="10"
+                    Offset="0,4" />
+        </Setter>
+    </Style>
+
+    <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource CardBackground}" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HeightRequest" Value="50" />
+        <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+        <Setter Property="BorderWidth" Value="2" />
+    </Style>
+
+    <!-- Border/Card Styles (Frame is obsolete in .NET 9) -->
+    <Style x:Key="CardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource CardBackground}" />
+        <Setter Property="Stroke" Value="{StaticResource BorderColor}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="Shadow">
+            <Shadow Brush="Black"
+                    Opacity="0.2"
+                    Radius="15"
+                    Offset="0,5" />
+        </Setter>
+    </Style>
+
+    <Style x:Key="InfoCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SurfaceBackground}" />
+        <Setter Property="Stroke" Value="{StaticResource BorderLight}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+        <Setter Property="Padding" Value="15" />
+    </Style>
+
+    <!-- Entry Styles -->
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceBackground}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource TextTertiary}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="50" />
+    </Style>
+
+    <!-- Editor Styles -->
+    <Style TargetType="Editor">
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceBackground}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource TextTertiary}" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <!-- Converters -->
+    <Style x:Key="InvertedBoolConverterStyle" TargetType="ContentPage">
+        <!-- Placeholder for converter -->
+    </Style>
+
+</ResourceDictionary>

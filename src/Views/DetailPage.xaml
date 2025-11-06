@@ -1,0 +1,28 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MSISDNWebClient.Views.DetailPage"
+             Title="Detalle">
+
+    <StackLayout Padding="10">
+        <Label Text="Detalles del MSISDN"
+               FontSize="24"
+               HorizontalOptions="Center" />
+
+        <Label Text="{Binding MSISDN}"
+               FontSize="18"
+               Margin="0,10,0,0" />
+
+        <Label Text="{Binding UserName}"
+               FontSize="18"
+               Margin="0,10,0,0" />
+
+        <Label Text="{Binding Status}"
+               FontSize="18"
+               Margin="0,10,0,0" />
+
+        <Button Text="Volver"
+                Command="{Binding BackCommand}"
+                HorizontalOptions="Center"
+                Margin="0,20,0,0" />
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:mp="http://schemas.microsoft.com/appx/manifest/mp/windows10">
+  <Identity Name="com.example.msisdnwebclient" Publisher="CN=YourPublisher" Version="1.0.0.0" />
+  <Properties>
+    <DisplayName>MSISDN Web Client</DisplayName>
+    <PublisherDisplayName>Your Publisher Name</PublisherDisplayName>
+    <Logo>Assets\Logo.png</Logo>
+    <Description>Aplicación cliente web para gestionar MSISDN.</Description>
+    <uap:VisualElements
+      DisplayName="MSISDN Web Client"
+      Description="Aplicación cliente web para gestionar MSISDN."
+      BackgroundColor="#FFFFFF"
+      Square150x150Logo="Assets\Logo.png"
+      Square44x44Logo="Assets\SmallLogo.png">
+      <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#FFFFFF" />
+    </uap:VisualElements>
+  </Properties>
+  <Dependencies>
+    <uap:TargetDeviceFamily Name="windows10" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+  </Dependencies>
+  <Applications>
+    <uap:Application Id="App" Executable="msisdn-web-client.exe" EntryPoint="App">
+      <uap:VisualElements
+        DisplayName="MSISDN Web Client"
+        Description="Aplicación cliente web para gestionar MSISDN."
+        BackgroundColor="#FFFFFF"
+        Square150x150Logo="Assets\Logo.png"
+        Square44x44Logo="Assets\SmallLogo.png">
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#FFFFFF" />
+      </uap:VisualElements>
+    </uap:Application>
+  </Applications>
+</Package>

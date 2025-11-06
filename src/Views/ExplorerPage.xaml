@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:MSISDNWebClient.ViewModels"
+             x:Class="MSISDNWebClient.Views.ExplorerPage"
+             x:DataType="vm:ExplorerViewModel"
+             BackgroundColor="{StaticResource PageBackground}">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header con búsqueda -->
+        <VerticalStackLayout Grid.Row="0"
+                            Padding="20"
+                            Spacing="15">
+            
+            <Label Text="Explorar Personas"
+                   Style="{StaticResource TitleStyle}" />
+
+            <Frame Style="{StaticResource CardStyle}"
+                   Padding="10">
+                <HorizontalStackLayout Spacing="10">
+                    
+                    <Entry Text="{Binding SearchQuery}"
+                           Placeholder="Buscar por nombre o ID..."
+                           HorizontalOptions="FillAndExpand"
+                           ReturnCommand="{Binding SearchCommand}" />
+
+                    <Button Text="🔍"
+                            Command="{Binding SearchCommand}"
+                            WidthRequest="50"
+                            CornerRadius="10" />
+                    
+                </HorizontalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+
+        <!-- Lista de personas -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,0,20,20"
+                                Spacing="15">
+
+                <CollectionView ItemsSource="{Binding Personas}">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            Spacing="10"
+                                            Margin="0,50">
+                            <Label Text="No se encontraron perfiles"
+                                   FontSize="16"
+                                   TextColor="{StaticResource TextSecondary}"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource CardStyle}"
+                                   Margin="0,5"
+                                   Padding="15">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ExplorerViewModel}}, Path=ViewPersonaCommand}"
+                                                         CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+
+                                <HorizontalStackLayout Spacing="15">
+                                    
+                                    <Image Source="{Binding AvatarUrl, TargetNullValue='dotnet_bot.png'}"
+                                           HeightRequest="60"
+                                           WidthRequest="60"
+                                           Aspect="AspectFill">
+                                        <Image.Clip>
+                                            <EllipseGeometry Center="30,30"
+                                                           RadiusX="30"
+                                                           RadiusY="30" />
+                                        </Image.Clip>
+                                    </Image>
+
+                                    <VerticalStackLayout Spacing="5"
+                                                        VerticalOptions="Center"
+                                                        HorizontalOptions="FillAndExpand">
+                                        
+                                        <Label Text="{Binding DisplayName}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource TextPrimary}" />
+
+                                        <Label Text="{Binding Bio}"
+                                               FontSize="12"
+                                               TextColor="{StaticResource TextSecondary}"
+                                               LineBreakMode="TailTruncation"
+                                               MaxLines="2" />
+
+                                    </VerticalStackLayout>
+
+                                    <Label Text="→"
+                                           FontSize="24"
+                                           TextColor="{StaticResource Primary}"
+                                           VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <ActivityIndicator IsRunning="{Binding IsSearching}"
+                                  Color="{StaticResource Primary}"
+                                  HeightRequest="40"
+                                  Margin="0,20" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

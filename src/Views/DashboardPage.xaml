@@ -1,0 +1,44 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MSISDNWebClient.Views.DashboardPage"
+             Title="Dashboard"
+             BackgroundColor="{StaticResource PageBackground}">
+
+    <StackLayout Padding="10">
+        <Label Text="Bienvenido al Dashboard"
+               FontSize="24"
+               HorizontalOptions="Center"
+               VerticalOptions="Start" />
+
+        <CollectionView ItemsSource="{Binding MSISDNRecords}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+              <Border Margin="0,8"
+                Padding="16"
+                Background="{StaticResource CardBackground}">
+               <Border.StrokeShape>
+                <RoundRectangle CornerRadius="12" />
+               </Border.StrokeShape>
+               <VerticalStackLayout Spacing="4">
+                <Label Text="{Binding MSISDN}"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource TextPrimary}" />
+                <Label Text="{Binding Status}"
+                    FontSize="14"
+                    TextColor="{StaticResource TextSecondary}" />
+                <Label Text="{Binding UpdatedDate, StringFormat='Actualizado: {0:g}'}"
+                    FontSize="12"
+                    TextColor="{StaticResource TextTertiary}" />
+               </VerticalStackLayout>
+              </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Agregar Nuevo MSISDN"
+                Command="{Binding AddMSISDNCommand}"
+                HorizontalOptions="Center"
+                VerticalOptions="End" />
+    </StackLayout>
+</ContentPage>
