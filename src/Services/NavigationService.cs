@@ -34,7 +34,8 @@ public class NavigationService
     {
         try
         {
-            await Shell.Current.GoToAsync($"///{route}");
+            var absoluteRoute = $"//{route}";
+            await Shell.Current.GoToAsync(absoluteRoute);
         }
         catch (Exception ex)
         {

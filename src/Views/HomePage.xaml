@@ -4,109 +4,197 @@
              xmlns:vm="clr-namespace:MSISDNWebClient.ViewModels"
              x:Class="MSISDNWebClient.Views.HomePage"
              x:DataType="vm:HomeViewModel"
-             BackgroundColor="{StaticResource PageBackground}">
+             BackgroundColor="Black"
+             Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20"
-                            Spacing="20">
+    <Grid RowDefinitions="Auto,*,Auto">
 
-            <!-- Header -->
-            <Label Text="Mi Identidad"
-                   Style="{StaticResource TitleStyle}"
-                   Margin="10,20,0,0" />
+        <!-- Header con pestañas tipo TikTok -->
+        <Grid Grid.Row="0"
+              Padding="0"
+              BackgroundColor="#1a1a1a"
+              HeightRequest="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <!-- Tarjeta de Identidad -->
-            <Frame Style="{StaticResource CardStyle}"
-                   Padding="25">
-                <VerticalStackLayout Spacing="15">
-                    
-                    <Label Text="{Binding DisplayName}"
-                           FontSize="24"
+            <!-- Pestaña Público -->
+            <Border Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    Padding="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectPublicTabCommand}" />
+                </Border.GestureRecognizers>
+                <VerticalStackLayout Spacing="5"
+                                    VerticalOptions="Center">
+                    <Label Text="Público"
+                           FontSize="16"
                            FontAttributes="Bold"
-                           TextColor="{StaticResource TextPrimary}"
+                           TextColor="{Binding IsPublicTab, Converter={StaticResource BoolToTabColorConverter}}"
                            HorizontalTextAlignment="Center" />
-
-                    <BoxView HeightRequest="1"
-                             Color="{StaticResource Gray300}"
-                             Margin="0,5" />
-
-                    <HorizontalStackLayout Spacing="10"
-                                          HorizontalOptions="Center">
-                        <Label Text="PersonaID:"
-                               FontSize="14"
-                               TextColor="{StaticResource TextSecondary}" />
-                        <Label Text="{Binding PersonaIdDisplay}"
-                               FontSize="14"
-                               FontAttributes="Bold"
-                               FontFamily="Monospace"
-                               TextColor="{StaticResource Primary}" />
-                    </HorizontalStackLayout>
-
-                    <Button Text="📋 Copiar ID Completo"
-                            Command="{Binding CopyPersonaIdCommand}"
-                            Style="{StaticResource SecondaryButtonStyle}"
-                            FontSize="14"
-                            HeightRequest="40" />
-
-                    <!-- Estado de verificación -->
-                    <HorizontalStackLayout Spacing="8"
-                                          HorizontalOptions="Center"
-                                          Margin="0,10,0,0">
-                        <Label Text="{Binding IsVerified, Converter={StaticResource BoolToVerifiedStatusConverter}}"
-                               FontSize="14"
-                               TextColor="{Binding IsVerified, Converter={StaticResource BoolToVerifiedColorConverter}}"
-                               FontAttributes="Bold" />
-                    </HorizontalStackLayout>
-
+                    <BoxView HeightRequest="3"
+                             BackgroundColor="White"
+                             IsVisible="{Binding IsPublicTab}"
+                             HorizontalOptions="Center"
+                             WidthRequest="60" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <!-- Acciones Principales -->
-            <VerticalStackLayout Spacing="15">
-                
-                <Button Text="🌐 Mi Espacio Web Persona"
-                        Command="{Binding GoToProfileCommand}"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        HeightRequest="60"
-                        FontSize="16" />
+            <!-- Pestaña Mis Contactos -->
+            <Border Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    Padding="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectContactsTabCommand}" />
+                </Border.GestureRecognizers>
+                <VerticalStackLayout Spacing="5"
+                                    VerticalOptions="Center">
+                    <Label Text="Mis contactos"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{Binding IsPublicTab, Converter={StaticResource InvertedBoolToTabColorConverter}}"
+                           HorizontalTextAlignment="Center" />
+                    <BoxView HeightRequest="3"
+                             BackgroundColor="White"
+                             IsVisible="{Binding IsPublicTab, Converter={StaticResource InvertedBoolConverter}}"
+                             HorizontalOptions="Center"
+                             WidthRequest="60" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
 
-                <Button Text="🔍 Explorar Personas"
-                        Command="{Binding GoToExplorerCommand}"
-                        Style="{StaticResource SecondaryButtonStyle}"
-                        HeightRequest="60"
-                        FontSize="16" />
+        <!-- Contenido principal con CarouselView para scroll horizontal -->
+        <CarouselView Grid.Row="1"
+                      ItemsSource="{Binding DisplayedProfiles}"
+                      CurrentItem="{Binding CurrentProfile}"
+                      IsScrollAnimated="True"
+                      Loop="False"
+                      PeekAreaInsets="0">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <Grid BackgroundColor="Black">
+                        <ScrollView>
+                            <VerticalStackLayout Padding="0"
+                                                Spacing="0">
+                                
+                                <!-- Avatar y nombre -->
+                                <VerticalStackLayout Padding="20,30,20,10"
+                                                    Spacing="10">
+                                    <Image Source="{Binding AvatarUrl, TargetNullValue='dotnet_bot.png'}"
+                                           HeightRequest="100"
+                                           WidthRequest="100"
+                                           Aspect="AspectFill"
+                                           HorizontalOptions="Center">
+                                        <Image.Clip>
+                                            <EllipseGeometry Center="50,50"
+                                                           RadiusX="50"
+                                                           RadiusY="50" />
+                                        </Image.Clip>
+                                    </Image>
 
+                                    <Label Text="{Binding DisplayName}"
+                                           FontSize="24"
+                                           FontAttributes="Bold"
+                                           TextColor="White"
+                                           HorizontalTextAlignment="Center" />
+                                    
+                                    <Label Text="{Binding PersonaIdShort}"
+                                           FontSize="12"
+                                           TextColor="#888888"
+                                           FontFamily="Monospace"
+                                           HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+
+                                <!-- Contenido HTML personalizado -->
+                                <WebView HeightRequest="600"
+                                         Margin="10,20">
+                                    <WebView.Source>
+                                        <HtmlWebViewSource Html="{Binding HtmlContent}" />
+                                    </WebView.Source>
+                                </WebView>
+
+                            </VerticalStackLayout>
+                        </ScrollView>
+
+                        <!-- Indicador de swipe -->
+                        <Label Text="← Desliza →"
+                               FontSize="12"
+                               TextColor="#444444"
+                               HorizontalOptions="Center"
+                               VerticalOptions="End"
+                               Margin="0,0,0,80" />
+                    </Grid>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+
+        <!-- Menú de navegación inferior -->
+        <Grid Grid.Row="2"
+              BackgroundColor="#1a1a1a"
+              HeightRequest="60"
+              Padding="10,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Inicio -->
+            <VerticalStackLayout Grid.Column="0"
+                                Spacing="2">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToHomeCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="🏠"
+                       FontSize="24"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="Inicio"
+                       FontSize="10"
+                       TextColor="White"
+                       HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
 
-            <!-- Información adicional -->
-            <Frame Style="{StaticResource InfoCardStyle}"
-                   Margin="0,20,0,0">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="💡 Tu identidad está segura"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource TextPrimary}" />
-                    
-                    <Label Text="Tu clave privada está cifrada y guardada solo en este dispositivo. Nunca se envía a ningún servidor."
-                           FontSize="12"
-                           TextColor="{StaticResource TextSecondary}"
-                           LineBreakMode="WordWrap" />
-                </VerticalStackLayout>
-            </Frame>
+            <!-- Notificaciones -->
+            <VerticalStackLayout Grid.Column="1"
+                                Spacing="2">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToExplorerCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="🔔"
+                       FontSize="24"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="Notificaciones"
+                       FontSize="10"
+                       TextColor="White"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
 
-            <!-- Botón de cerrar sesión -->
-            <Button Text="Cerrar Sesión"
-                    Command="{Binding LogoutCommand}"
-                    BackgroundColor="Transparent"
-                    TextColor="{StaticResource Error}"
-                    FontSize="14"
-                    Margin="0,20,0,30" />
+            <!-- Perfil -->
+            <VerticalStackLayout Grid.Column="2"
+                                Spacing="2">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToProfileCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="👤"
+                       FontSize="24"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="Perfil"
+                       FontSize="10"
+                       TextColor="White"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}"
-                              Color="{StaticResource Primary}"
-                              HeightRequest="40" />
+        </Grid>
 
-        </VerticalStackLayout>
-    </ScrollView>
+        <!-- Indicador de carga -->
+        <ActivityIndicator Grid.Row="1"
+                          IsRunning="{Binding IsBusy}"
+                          Color="White"
+                          HeightRequest="40"
+                          VerticalOptions="Center"
+                          HorizontalOptions="Center" />
+
+    </Grid>
 
 </ContentPage>

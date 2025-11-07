@@ -14,6 +14,9 @@
             <converters:CollectionNotEmptyConverter x:Key="CollectionNotEmptyConverter" />
             <converters:BoolToVerifiedStatusConverter x:Key="BoolToVerifiedStatusConverter" />
             <converters:BoolToVerifiedColorConverter x:Key="BoolToVerifiedColorConverter" />
+            <converters:BoolToColorConverter x:Key="BoolToTabColorConverter" />
+            <converters:BoolToColorConverter x:Key="InvertedBoolToTabColorConverter" Inverted="True" />
+            <converters:BoolToFontAttributeConverter x:Key="BoolToFontAttributeConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

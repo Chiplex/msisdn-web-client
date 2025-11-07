@@ -4,142 +4,409 @@
              xmlns:vm="clr-namespace:MSISDNWebClient.ViewModels"
              x:Class="MSISDNWebClient.Views.ProfilePage"
              x:DataType="vm:ProfileViewModel"
-             BackgroundColor="{StaticResource PageBackground}">
+             BackgroundColor="{StaticResource PageBackground}"
+             Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20"
-                             Spacing="20">
+    <Grid RowDefinitions="Auto,*,Auto,Auto">
 
-            <Label Text="Mi Perfil Web"
-                   Style="{StaticResource TitleStyle}"
-                   Margin="10,20,0,10" />
+        <!-- Header con tres pestañas: Mi Página, Plantillas, Ajustes -->
+        <Grid Grid.Row="0"
+              Padding="0"
+              BackgroundColor="White"
+              HeightRequest="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <!-- Avatar y nombre -->
-            <Border Style="{StaticResource CardStyle}">
-                <VerticalStackLayout Spacing="15">
-                    <Image Source="{Binding AvatarUrl, TargetNullValue='dotnet_bot.png'}"
-                           HeightRequest="120"
-                           WidthRequest="120"
-                           Aspect="AspectFill"
-                           HorizontalOptions="Center">
-                        <Image.Clip>
-                            <EllipseGeometry Center="60,60"
-                                             RadiusX="60"
-                                             RadiusY="60" />
-                        </Image.Clip>
-                    </Image>
-
-                    <Entry Text="{Binding DisplayName}"
-                           Placeholder="Tu nombre"
-                           IsReadOnly="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
-                           FontSize="20"
-                           FontAttributes="Bold"
+            <!-- Pestaña Mi Página -->
+            <Border Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    Padding="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectMyPageTabCommand}" />
+                </Border.GestureRecognizers>
+                <VerticalStackLayout Spacing="5"
+                                    VerticalOptions="Center">
+                    <Label Text="Mi Página"
+                           FontSize="14"
+                           FontAttributes="{Binding IsMyPageTab, Converter={StaticResource BoolToFontAttributeConverter}}"
+                           TextColor="{Binding IsMyPageTab, Converter={StaticResource BoolToTabColorConverter}}"
                            HorizontalTextAlignment="Center" />
+                    <BoxView HeightRequest="2"
+                             BackgroundColor="{StaticResource Primary}"
+                             IsVisible="{Binding IsMyPageTab}"
+                             HorizontalOptions="Fill" />
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Biografía -->
-            <Border Style="{StaticResource CardStyle}">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Biografía"
+            <!-- Pestaña Plantillas -->
+            <Border Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    Padding="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectTemplatesTabCommand}" />
+                </Border.GestureRecognizers>
+                <VerticalStackLayout Spacing="5"
+                                    VerticalOptions="Center">
+                    <Label Text="Plantillas"
                            FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource TextPrimary}" />
-
-                    <Editor Text="{Binding Bio}"
-                            Placeholder="Cuéntanos sobre ti..."
-                            IsReadOnly="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
-                            HeightRequest="100"
-                            AutoSize="TextChanges" />
+                           FontAttributes="{Binding IsTemplatesTab, Converter={StaticResource BoolToFontAttributeConverter}}"
+                           TextColor="{Binding IsTemplatesTab, Converter={StaticResource BoolToTabColorConverter}}"
+                           HorizontalTextAlignment="Center" />
+                    <BoxView HeightRequest="2"
+                             BackgroundColor="{StaticResource Primary}"
+                             IsVisible="{Binding IsTemplatesTab}"
+                             HorizontalOptions="Fill" />
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Contenido Web -->
-            <Border Style="{StaticResource CardStyle}">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Página Web Personal"
+            <!-- Pestaña Ajustes -->
+            <Border Grid.Column="2"
+                    BackgroundColor="Transparent"
+                    Padding="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectSettingsTabCommand}" />
+                </Border.GestureRecognizers>
+                <VerticalStackLayout Spacing="5"
+                                    VerticalOptions="Center">
+                    <Label Text="Ajustes"
                            FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource TextPrimary}" />
-
-                    <Label Text="Edita tu espacio web (HTML/Markdown)"
-                           FontSize="12"
-                           TextColor="{StaticResource TextSecondary}" />
-
-                    <Editor Text="{Binding WebPageContent}"
-                            Placeholder="&lt;h1&gt;Mi Página&lt;/h1&gt;..."
-                            IsReadOnly="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
-                            HeightRequest="150"
-                            AutoSize="TextChanges"
-                            FontFamily="Monospace" />
+                           FontAttributes="{Binding IsSettingsTab, Converter={StaticResource BoolToFontAttributeConverter}}"
+                           TextColor="{Binding IsSettingsTab, Converter={StaticResource BoolToTabColorConverter}}"
+                           HorizontalTextAlignment="Center" />
+                    <BoxView HeightRequest="2"
+                             BackgroundColor="{StaticResource Primary}"
+                             IsVisible="{Binding IsSettingsTab}"
+                             HorizontalOptions="Fill" />
                 </VerticalStackLayout>
             </Border>
+        </Grid>
 
-            <!-- Enlaces sociales -->
-            <Border Style="{StaticResource CardStyle}">
-                <VerticalStackLayout Spacing="15">
-                    <Label Text="Enlaces Sociales"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource TextPrimary}" />
+        <!-- Contenido principal según la pestaña activa -->
+        <ScrollView Grid.Row="1">
+            <Grid>
+                <!-- Pestaña: Mi Página (Motor de diseño) -->
+                <VerticalStackLayout IsVisible="{Binding IsMyPageTab}"
+                                    Padding="15"
+                                    Spacing="15">
 
-                    <CollectionView ItemsSource="{Binding Links}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <HorizontalStackLayout Spacing="10"
-                                                       Padding="5">
-                                    <Label Text="{Binding Title}"
-                                           FontSize="14"
-                                           TextColor="{StaticResource TextPrimary}"
-                                           VerticalOptions="Center"
-                                           WidthRequest="100" />
-                                    <Label Text="{Binding Url}"
-                                           FontSize="12"
-                                           TextColor="{StaticResource Primary}"
-                                           VerticalOptions="Center"
-                                           LineBreakMode="TailTruncation"
-                                           HorizontalOptions="Fill" />
-                                </HorizontalStackLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                <!-- Carrusel de plantillas de bloques -->
+                <Border BackgroundColor="White"
+                        Padding="10"
+                        StrokeThickness="1"
+                        Stroke="{StaticResource Gray300}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Templates disponibles"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextSecondary}" />
+                        
+                        <CarouselView ItemsSource="{Binding AvailableTemplateBlocks}"
+                                     HeightRequest="80"
+                                     PeekAreaInsets="20">
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BackgroundColor="{StaticResource Gray100}"
+                                            Padding="15"
+                                            Margin="5"
+                                            StrokeThickness="1"
+                                            Stroke="{StaticResource Gray300}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProfileViewModel}}, Path=AddTemplateBlockCommand}"
+                                                                 CommandParameter="{Binding .}" />
+                                        </Border.GestureRecognizers>
+                                        <VerticalStackLayout Spacing="5"
+                                                            HorizontalOptions="Center"
+                                                            VerticalOptions="Center">
+                                            <Label Text="{Binding Icon}"
+                                                   FontSize="24"
+                                                   HorizontalTextAlignment="Center" />
+                                            <Label Text="{Binding Name}"
+                                                   FontSize="11"
+                                                   TextColor="{StaticResource TextPrimary}"
+                                                   HorizontalTextAlignment="Center" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+                    </VerticalStackLayout>
+                </Border>
 
-                    <Button Text="+ Añadir Enlace"
-                            Command="{Binding AddLinkCommand}"
-                            IsVisible="{Binding IsEditMode}"
-                            Style="{StaticResource SecondaryButtonStyle}"
-                            FontSize="14"
-                            HeightRequest="40" />
-                </VerticalStackLayout>
-            </Border>
+                <!-- Título de la página -->
+                <Entry Text="{Binding PageTitle}"
+                       Placeholder="Título de tu página (ej: AROBIX)"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center" />
 
-            <!-- Botones de acción -->
-            <HorizontalStackLayout Spacing="10"
-                                   HorizontalOptions="Center"
-                                   Margin="0,10,0,30">
-                <Button Text="Editar"
-                        Command="{Binding EnableEditModeCommand}"
-                        IsVisible="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        WidthRequest="120" />
+                <!-- Lista de bloques/componentes de la página -->
+                <CollectionView ItemsSource="{Binding PageBlocks}">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            Padding="40">
+                            <Label Text="📦"
+                                   FontSize="48"
+                                   HorizontalTextAlignment="Center" />
+                            <Label Text="No hay componentes"
+                                   FontSize="14"
+                                   TextColor="{StaticResource TextSecondary}"
+                                   HorizontalTextAlignment="Center"
+                                   Margin="0,10,0,0" />
+                            <Label Text="Selecciona un template arriba para comenzar"
+                                   FontSize="12"
+                                   TextColor="{StaticResource TextSecondary}"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
 
-                <Button Text="Guardar"
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BackgroundColor="White"
+                                    Padding="10"
+                                    Margin="0,5"
+                                    StrokeThickness="1"
+                                    Stroke="{StaticResource Gray300}">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    
+                                    <!-- Contenido del bloque -->
+                                    <VerticalStackLayout Grid.Column="0"
+                                                        Spacing="5">
+                                        <Label Text="{Binding Title}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource TextPrimary}" />
+                                        <Label Text="{Binding Type}"
+                                               FontSize="11"
+                                               TextColor="{StaticResource TextSecondary}" />
+                                    </VerticalStackLayout>
+
+                                    <!-- Botón de opciones -->
+                                    <Button Grid.Column="1"
+                                            Text="⚙"
+                                            FontSize="20"
+                                            BackgroundColor="Transparent"
+                                            TextColor="{StaticResource Primary}"
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProfileViewModel}}, Path=ShowBlockOptionsCommand}"
+                                            CommandParameter="{Binding .}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+
+            <!-- Pestaña: Plantillas -->
+            <VerticalStackLayout IsVisible="{Binding IsTemplatesTab}"
+                                Padding="15"
+                                Spacing="15">
+                <Label Text="Plantillas Predefinidas"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}" />
+
+                <CollectionView ItemsSource="{Binding PredefinedTemplates}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BackgroundColor="White"
+                                    Padding="15"
+                                    Margin="0,5"
+                                    StrokeThickness="1"
+                                    Stroke="{StaticResource Gray300}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProfileViewModel}}, Path=LoadTemplateCommand}"
+                                                         CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="80,*">
+                                    <Border Grid.Column="0"
+                                            BackgroundColor="{StaticResource Gray100}"
+                                            HeightRequest="60"
+                                            WidthRequest="60">
+                                        <Label Text="{Binding Icon}"
+                                               FontSize="32"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1"
+                                                        Spacing="5"
+                                                        VerticalOptions="Center">
+                                        <Label Text="{Binding Name}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource TextPrimary}" />
+                                        <Label Text="{Binding Description}"
+                                               FontSize="12"
+                                               TextColor="{StaticResource TextSecondary}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Pestaña: Ajustes -->
+            <VerticalStackLayout IsVisible="{Binding IsSettingsTab}"
+                                Padding="15"
+                                Spacing="20">
+                <Label Text="Ajustes de la Página"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}" />
+
+                <!-- Avatar -->
+                <Border Style="{StaticResource CardStyle}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Avatar"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}" />
+                        <Image Source="{Binding AvatarUrl, TargetNullValue='dotnet_bot.png'}"
+                               HeightRequest="100"
+                               WidthRequest="100"
+                               Aspect="AspectFill"
+                               HorizontalOptions="Center">
+                            <Image.Clip>
+                                <EllipseGeometry Center="50,50"
+                                               RadiusX="50"
+                                               RadiusY="50" />
+                            </Image.Clip>
+                        </Image>
+                        <Entry Text="{Binding AvatarUrl}"
+                               Placeholder="URL del avatar"
+                               Keyboard="Url" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Nombre -->
+                <Border Style="{StaticResource CardStyle}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Nombre público"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}" />
+                        <Entry Text="{Binding DisplayName}"
+                               Placeholder="Tu nombre" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Botón guardar -->
+                <Button Text="Guardar Ajustes"
                         Command="{Binding SaveProfileCommand}"
-                        IsVisible="{Binding IsEditMode}"
                         Style="{StaticResource PrimaryButtonStyle}"
-                        WidthRequest="120" />
+                        Margin="0,20,0,0" />
+            </VerticalStackLayout>
 
-                <Button Text="Cancelar"
-                        Command="{Binding CancelEditCommand}"
-                        IsVisible="{Binding IsEditMode}"
-                        Style="{StaticResource SecondaryButtonStyle}"
-                        WidthRequest="120" />
+            </Grid>
+        </ScrollView>
+
+        <!-- Indicador de capacidad de la página + Switch de vista previa -->
+        <Grid Grid.Row="2"
+              Padding="15,10"
+              BackgroundColor="White"
+              ColumnDefinitions="*,Auto">
+            
+            <HorizontalStackLayout Grid.Column="0"
+                                  Spacing="10"
+                                  VerticalOptions="Center">
+                <Label Text="Capacidad de la página"
+                       FontSize="12"
+                       TextColor="{StaticResource TextSecondary}"
+                       VerticalOptions="Center" />
+                <Button Text="👁"
+                        FontSize="16"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource TextSecondary}"
+                        WidthRequest="30"
+                        HeightRequest="30"
+                        Command="{Binding ShowCapacityInfoCommand}" />
             </HorizontalStackLayout>
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}"
-                               Color="{StaticResource Primary}"
-                               HeightRequest="40" />
-        </VerticalStackLayout>
-    </ScrollView>
+            <HorizontalStackLayout Grid.Column="1"
+                                  Spacing="10">
+                <Label Text="Vista previa"
+                       FontSize="12"
+                       TextColor="{StaticResource TextSecondary}"
+                       VerticalOptions="Center" />
+                <Switch IsToggled="{Binding ShowPreview}"
+                        VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- Menú de navegación inferior -->
+        <Grid Grid.Row="3"
+              BackgroundColor="White"
+              HeightRequest="60"
+              Padding="10,5"
+              ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Inicio -->
+            <VerticalStackLayout Grid.Column="0"
+                                Spacing="2">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToHomeCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="🏠"
+                       FontSize="24"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{StaticResource Gray400}" />
+                <Label Text="Inicio"
+                       FontSize="10"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- Notificaciones -->
+            <VerticalStackLayout Grid.Column="1"
+                                Spacing="2">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToNotificationsCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="🔔"
+                       FontSize="24"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{StaticResource Gray400}" />
+                <Label Text="Notificaciones"
+                       FontSize="10"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- Perfil (activo) -->
+            <VerticalStackLayout Grid.Column="2"
+                                Spacing="2">
+                <Label Text="👤"
+                       FontSize="24"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{StaticResource TextPrimary}" />
+                <Label Text="Perfil"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+        </Grid>
+
+        <!-- Indicador de carga -->
+        <ActivityIndicator Grid.Row="1"
+                          IsRunning="{Binding IsBusy}"
+                          Color="{StaticResource Primary}"
+                          HeightRequest="40"
+                          VerticalOptions="Center"
+                          HorizontalOptions="Center" />
+
+    </Grid>
 
 </ContentPage>

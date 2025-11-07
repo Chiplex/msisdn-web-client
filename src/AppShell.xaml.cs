@@ -9,9 +9,7 @@ namespace MSISDNWebClient
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("🔷 Inicializando AppShell...");
                 InitializeComponent();
-                System.Diagnostics.Debug.WriteLine("✅ InitializeComponent completado");
 
                 // Registrar rutas de navegación
                 Routing.RegisterRoute(Routes.Welcome, typeof(WelcomePage));
@@ -21,7 +19,6 @@ namespace MSISDNWebClient
                 Routing.RegisterRoute(Routes.Explorer, typeof(ExplorerPage));
                 Routing.RegisterRoute(Routes.PersonaDetail, typeof(PersonaDetailPage));
                 
-                System.Diagnostics.Debug.WriteLine("✅ Rutas registradas");
             }
             catch (Exception ex)
             {

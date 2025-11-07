@@ -6,14 +6,11 @@ public partial class App : Application
     {
         try
         {
-            System.Diagnostics.Debug.WriteLine("🔷 Inicializando App...");
             InitializeComponent();
-            System.Diagnostics.Debug.WriteLine("✅ App InitializeComponent completado");
 
             // Capturar excepciones no manejadas
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
-            System.Diagnostics.Debug.WriteLine("✅ Exception handlers registrados");
         }
         catch (Exception ex)
         {
@@ -27,15 +24,9 @@ public partial class App : Application
     {
         try
         {
-            System.Diagnostics.Debug.WriteLine("🔷 Creando ventana...");
             var shell = new AppShell();
-            System.Diagnostics.Debug.WriteLine("✅ AppShell creado");
             
-            var window = new Window(shell)
-            {
-                Title = "MSISDN Web Client"
-            };
-            System.Diagnostics.Debug.WriteLine("✅ Ventana creada");
+            var window = new Window(shell) { Title = "MSISDN Web Client" };
             return window;
         }
         catch (Exception ex)

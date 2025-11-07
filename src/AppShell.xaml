@@ -8,11 +8,15 @@
     Shell.NavBarIsVisible="False">
 
     <!-- Página de bienvenida inicial -->
-    <TabBar>
-        <ShellContent
-            Title="Welcome"
-            ContentTemplate="{DataTemplate views:WelcomePage}"
-            Route="welcome" />
-    </TabBar>
+    <ShellContent
+        Title="Welcome"
+        ContentTemplate="{DataTemplate views:WelcomePage}"
+        Route="welcome" />
+
+    <!-- Pantalla principal tras autenticación -->
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate views:HomePage}"
+        Route="home" />
 
 </Shell>

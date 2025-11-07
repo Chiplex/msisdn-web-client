@@ -168,6 +168,43 @@ namespace MSISDNWebClient.Services
         }
 
         /// <summary>
+        /// Obtiene perfiles públicos para el feed
+        /// </summary>
+        public Task<List<UserProfile>> GetPublicProfilesAsync()
+        {
+            return Task.Run(() =>
+            {
+                var publicProfiles = new List<UserProfile>();
+                foreach (var profile in _mockDatabase.Values)
+                {
+                    if (profile.IsPublic)
+                        publicProfiles.Add(profile.GetPublicProfile());
+                }
+                return publicProfiles;
+            });
+        }
+
+        /// <summary>
+        /// Obtiene la lista de contactos del usuario
+        /// </summary>
+        public Task<List<UserProfile>> GetContactsAsync()
+        {
+            return Task.Run(() =>
+            {
+                // Mock: devolver algunos perfiles de ejemplo como contactos
+                var contacts = new List<UserProfile>();
+                var count = 0;
+                foreach (var profile in _mockDatabase.Values)
+                {
+                    if (count >= 3) break; // Limitar a 3 contactos de ejemplo
+                    contacts.Add(profile.GetPublicProfile());
+                    count++;
+                }
+                return contacts;
+            });
+        }
+
+        /// <summary>
         /// Inicializa datos mock de ejemplo
         /// </summary>
         private void InitializeMockData()
